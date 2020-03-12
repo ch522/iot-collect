@@ -1,0 +1,17 @@
+[
+  {
+    "type": "tcp_short",
+    "port": 14500,
+    "timeOut": 180
+  },
+  {
+    "type": "tcp_long",
+    "port": 14501,
+    "timeOut": 180
+  },
+  {
+    "type": "udp",
+    "port": 14502,
+    "timeOut": 180
+  }
+]
