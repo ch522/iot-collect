@@ -1,6 +1,10 @@
-package com.goldcard.iot.collect.protocol;
+package com.goldcard.iot.collect;
 
-public class InwardCmd {
+/**
+ * @Author G002005
+ * @Date 2020/4/17 15:45
+ */
+public class ProcessHandlerBean {
     private String sessionId;
     private String protocolCode;
     private byte[] data;

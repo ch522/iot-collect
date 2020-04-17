@@ -2,6 +2,7 @@ package com.goldcard.iot.collect.protocol;
 
 import com.goldcard.iot.collect.protocol.cmd.AbstractCmdResolve;
 import com.goldcard.iot.collect.util.SpringContextHolder;
+import com.goldcard.protocol.InwardCommand;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public abstract class AbstractProtocolResolve {
      * @param bs 接收到的byte数组
      * @author 2005
      */
-    public abstract UnifiedProtocol unPack(byte[] bs);
+    public abstract InwardCommand unPack(byte[] bs);
 
     /**
      * 协议组包
@@ -33,19 +34,7 @@ public abstract class AbstractProtocolResolve {
      * @param inMap 需要组包的数据
      * @author 2005
      */
-    public abstract byte[] pack(PackData inMap);
+//    public abstract byte[] pack(PackData inMap);
 
-
-    protected <T extends AbstractCmdResolve> List<T> getCmds(Class<T> clazz) {
-        return SpringContextHolder.getBeansWithType(clazz);
-    }
-
-//    /**
-//     * 协议处理
-//     *
-//     * @param data 需要处理的数据
-//     * @author 2005
-//     */
-//    public abstract void process(UnifiedProtocol data);
 
 }

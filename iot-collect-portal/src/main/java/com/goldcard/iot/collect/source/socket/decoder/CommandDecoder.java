@@ -10,7 +10,14 @@ public class CommandDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext,
                           ByteBuf byteBuf, List<Object> list) throws Exception {
-        byte[] bs = buf2byte(byteBuf);
+//        byte[] bs = buf2byte(byteBuf);
+//        list.add(bs);
+        int length = byteBuf.readableBytes();
+        byte[] bs = new byte[length];
+
+        while (byteBuf.isReadable()) {
+            byteBuf.readBytes(bs);
+        }
         list.add(bs);
     }
 

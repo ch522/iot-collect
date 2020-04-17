@@ -1,7 +1,9 @@
 package com.goldcard.iot.collect.protocol;
 
+import com.goldcard.iot.collect.MessageBean;
 import com.goldcard.iot.collect.protocol.cmd.AbstractCmdHandler;
 import com.goldcard.iot.collect.util.SpringContextHolder;
+import com.goldcard.protocol.InwardCommand;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public abstract class AbstractProtocolHandler {
      * @Author 2005
      * @Date 2020/2/3 下午1:31
      */
-    public abstract void handler(UnifiedProtocol item);
+    public abstract void handler(MessageBean bean);
 
     protected <T extends AbstractCmdHandler> List<T> getCmds(Class<T> clazz) {
         return SpringContextHolder.getBeansWithType(clazz);

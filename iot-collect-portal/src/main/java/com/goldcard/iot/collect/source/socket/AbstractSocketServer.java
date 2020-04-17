@@ -3,6 +3,7 @@ package com.goldcard.iot.collect.source.socket;
 import com.goldcard.iot.collect.configure.SocketServerConfigure;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
@@ -18,7 +19,8 @@ public abstract class AbstractSocketServer {
     protected ServerBootstrap createServer() {
 
         ServerBootstrap server = new ServerBootstrap();
-        server.channel(NioServerSocketChannel.class)
+        server.channel(NioServerSocketChannel.class).
+                childOption(ChannelOption.RCVBUF_ALLOCATOR, new AdaptiveRecvByteBufAllocator(64, 2048, 65536))
                 .option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.TCP_NODELAY, Boolean.TRUE)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
         return server;

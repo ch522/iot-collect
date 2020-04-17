@@ -11,7 +11,7 @@ rule "jk-16"
 // lenz-dtu注册帧
 rule "lenz-dtu-register"
     when
-        $protocol : ProtocolRule(hexStr matches "^4641.*46$" && length == 13);
+        $protocol : ProtocolRule(hexStr matches "^4641.*46$" && size == 13);
     then
         $protocol.setHasRegister(true);
         $protocol.setRegResponse("4A4B474B4A5F4C494E4B5F4F4B"); //JKGKJ_LINK_OK

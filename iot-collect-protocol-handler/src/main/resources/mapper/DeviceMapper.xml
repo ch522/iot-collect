@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DeviceMapper">
+    <resultMap id="BaseResultMap" type="Device">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="no" jdbcType="VARCHAR" property="no"/>
+        <result column="dev_type_code" jdbcType="VARCHAR" property="devTypeCode"/>
+        <result column="protocol_no" jdbcType="VARCHAR" property="protocolNo"/>
+        <result column="dep_code" jdbcType="VARCHAR" property="depCode"/>
+        <result column="org_code" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
+        <result column="modifier_id" jdbcType="BIGINT" property="modifierId"/>
+        <result column="install_state" jdbcType="TINYINT" property="installState"/>
+        <result column="no_old" jdbcType="VARCHAR" property="noOld"/>
+        <result column="comm_no" jdbcType="VARCHAR" property="commNo"/>
+        <result column="external_id" jdbcType="VARCHAR" property="externalId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, no, dev_type_code, protocol_no, dep_code, org_code, gmt_create, gmt_modified, 
+    state, creator_id, modifier_id, install_state, no_old, comm_no, external_id
+  </sql>
+    <select id="query" parameterType="DeviceConditionBo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from device
+        <where>
+            <if test="pk != null and pk != ''">
+                and id = #{pk}
+            </if>
+            <if test="_parameter.containsKey('no') and no != null and no != '' ">
+                and comm_no = #{no}
+            </if>
+            <if test="_parameter.isListNotEmpty('states')">
+                and state in
+                <foreach collection="states" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <delete id="delete" parameterType="java.lang.Long">
+    delete from device
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="Device">
+    insert into device (id, no, dev_type_code, 
+      protocol_no, dep_code, org_code, 
+      gmt_create, gmt_modified, state, 
+      creator_id, modifier_id, install_state, 
+      no_old, comm_no, external_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{no,jdbcType=VARCHAR}, #{devTypeCode,jdbcType=VARCHAR}, 
+      #{protocolNo,jdbcType=VARCHAR}, #{depCode,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, 
+      #{creatorId,jdbcType=BIGINT}, #{modifierId,jdbcType=BIGINT}, #{installState,jdbcType=TINYINT}, 
+      #{noOld,jdbcType=VARCHAR}, #{commNo,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}
+      )
+  </insert>
+    <update id="update" parameterType="Device">
+    update device
+    set no = #{no,jdbcType=VARCHAR},
+      dev_type_code = #{devTypeCode,jdbcType=VARCHAR},
+      protocol_no = #{protocolNo,jdbcType=VARCHAR},
+      dep_code = #{depCode,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=TINYINT},
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      modifier_id = #{modifierId,jdbcType=BIGINT},
+      install_state = #{installState,jdbcType=TINYINT},
+      no_old = #{noOld,jdbcType=VARCHAR},
+      comm_no = #{commNo,jdbcType=VARCHAR},
+      external_id = #{externalId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

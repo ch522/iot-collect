@@ -11,6 +11,6 @@
         <!--        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>-->
     </context:component-scan>
     <!-- 缓存配置-->
-    <bean id="iotCacheManager" class="com.goldcard.iot.collect.cach.redis.RedisCacheManager"/>
+    <bean id="iotCacheManager" class="com.goldcard.iot.collect.cach.eh.EhCacheManager"/>
 
 </beans>
