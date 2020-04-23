@@ -5,13 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.goldcard.iot</groupId>
-    <artifactId>iot-collect</artifactId>
+    <artifactId>inso-collect</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>iot-collect-core</module>
-        <module>iot-collect-portal</module>
-        <module>iot-collect-protocol</module>
-        <module>iot-collect-protocol-handler</module>
+        <module>inso-collect-core</module>
+        <module>inso-collect-portal</module>
+        <module>inso-collect-protocol</module>
+        <module>inso-protocol-handler</module>
+        <module>inso-collect-dao</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -80,7 +81,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.29.Final</version>
+            <version>4.1.42.Final</version>
         </dependency>
 
         <dependency>
@@ -88,10 +89,16 @@
             <artifactId>goldcard-protocol</artifactId>
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>iot-collect</finalName>
+        <finalName>inso-collect</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
