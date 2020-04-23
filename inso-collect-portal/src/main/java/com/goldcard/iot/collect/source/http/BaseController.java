@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
@@ -44,36 +45,39 @@ public class BaseController {
             String sessionId = String.valueOf(inMap.get("deviceId"));
             String hex = String.valueOf(inMap.get("msg"));
             String cmdPoolId = IotConstants.IOT_CACHE_CMD_KEY + sessionId;
-            if (!iotCacheManager.hasKey(cmdPoolId)) {
-                iotCacheManager.put(cmdPoolId, new LinkedList<CmdSendPool>());
-            }
-            httpBizExecutor.execute(() -> {
-                try {
-                    ProtocolRule rule = handleRule(sessionId, hex);
-                    if (rule.getHasRegister()) {
-                        if (StringUtils.isNotEmpty(rule.getRegResponse())) {
-                            Map<String, Object> sendMap = new HashMap<>();
-                            sendMap.put("deviceId", sessionId);
-                            sendMap.put("msg", rule.getRegResponse());
-                            //TODO 此处发送指令逻辑
-                            System.out.println("发送指令:" + JsonUtil.obj2Str(sendMap));
-                        }
-                    } else {
-                        if (StringUtils.isBlank(rule.getProtocolCode())) {
-                            throw new RuntimeException("未匹配到协议");
-                        }
-                        ProcessHandlerBean bean = new ProcessHandlerBean();
-                        bean.setSessionId(sessionId);
-                        bean.setProtocolCode(rule.getProtocolCode());
-                        bean.setData(CommonUtil.hex2Byte(hex));
-                        commandHandler.process(bean);
-                        send(sessionId);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ERROR_LOG.error("出错:", e);
-                }
-            });
+//            if (!iotCacheManager.hasKey(cmdPoolId)) {
+//                iotCacheManager.put(cmdPoolId, new LinkedList<CmdSendPool>());
+//            }
+            initialize(inMap);
+//            httpBizExecutor.execute(() -> {
+//
+//
+//                try {
+//                    ProtocolRule rule = handleRule(sessionId, hex);
+//                    if (rule.getHasRegister()) {
+//                        if (StringUtils.isNotEmpty(rule.getRegResponse())) {
+//                            Map<String, Object> sendMap = new HashMap<>();
+//                            sendMap.put("deviceId", sessionId);
+//                            sendMap.put("msg", rule.getRegResponse());
+//                            //TODO 此处发送指令逻辑
+//                            System.out.println("发送指令:" + JsonUtil.obj2Str(sendMap));
+//                        }
+//                    } else {
+//                        if (StringUtils.isBlank(rule.getProtocolCode())) {
+//                            throw new RuntimeException("未匹配到协议");
+//                        }
+//                        ProcessHandlerBean bean = new ProcessHandlerBean();
+//                        bean.setSessionId(sessionId);
+//                        bean.setProtocolCode(rule.getProtocolCode());
+//                        bean.setData(CommonUtil.hex2Byte(hex));
+//                        commandHandler.process(bean);
+//                        send(sessionId);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ERROR_LOG.error("出错:", e);
+//                }
+//            });
             result.put("echoCode", "0000");
             result.put("echoMsg", "成功");
         } catch (Exception e) {
@@ -81,6 +85,21 @@ public class BaseController {
         }
 
         return result;
+    }
+
+
+    private void initialize(Map<String, Object> inMap) {
+        String sessionId = String.valueOf(inMap.get("deviceId"));
+        HttpHandlerContext context = null;
+        if (!iotCacheManager.hasKey(sessionId)) {
+            HttpInboundHandler handler = SpringContextHolder.getBean(NbIotHandler.class);
+            HttpIdleHandler idleHandler = new HttpIdleHandler(30L, TimeUnit.SECONDS);
+            context = new DefaultHttpHandlerContext(httpBizExecutor.getExecutor(), handler, idleHandler, sessionId);
+            iotCacheManager.put(sessionId, context);
+        } else {
+            context = (HttpHandlerContext) iotCacheManager.get(sessionId);
+        }
+        context.fireInvoker(inMap);
     }
 
 

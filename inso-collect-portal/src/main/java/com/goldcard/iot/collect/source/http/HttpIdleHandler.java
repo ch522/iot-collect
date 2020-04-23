@@ -10,12 +10,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class HttpIdleHandler implements Serializable {
     private static final long MIN_TIMEOUT_NANOS;
-    private long timeOut;
+    private long idleTimeNanos;
     private Long lastOperatorTime;
     private ScheduledFuture<?> future;
+    private HttpHandlerContext ctx;
 
     static {
         MIN_TIMEOUT_NANOS = TimeUnit.MILLISECONDS.toNanos(1L);
+    }
+
+    private long ticksInNanos() {
+        return System.nanoTime();
     }
 
     public HttpIdleHandler(Long timeOut, TimeUnit unit) {
@@ -23,14 +28,16 @@ public class HttpIdleHandler implements Serializable {
             throw new NullPointerException("unit");
         } else {
             if (timeOut <= 0L) {
-                this.timeOut = 0L;
+                this.idleTimeNanos = 0L;
             } else {
-                this.timeOut = Math.max(unit.toNanos(timeOut), MIN_TIMEOUT_NANOS);
+                this.idleTimeNanos = Math.max(unit.toNanos(timeOut), MIN_TIMEOUT_NANOS);
             }
         }
     }
 
+    private void initialize() {
 
+    }
 
 
 }

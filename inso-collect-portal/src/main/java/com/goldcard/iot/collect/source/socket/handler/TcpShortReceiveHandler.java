@@ -114,6 +114,8 @@ public class TcpShortReceiveHandler extends SimpleChannelInboundHandler<byte[]> 
         return rule;
     }
 
+
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);

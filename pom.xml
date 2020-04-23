@@ -10,7 +10,7 @@
     <modules>
         <module>inso-collect-core</module>
         <module>inso-collect-portal</module>
-        <module>inso-collect-protocol</module>
+        <module>inso-protocol-resolve</module>
         <module>inso-protocol-handler</module>
         <module>inso-collect-dao</module>
     </modules>

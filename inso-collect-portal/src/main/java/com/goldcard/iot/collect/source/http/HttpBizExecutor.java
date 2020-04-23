@@ -39,9 +39,9 @@ public class HttpBizExecutor {
 
     }
 
-//    public ExecutorService getExecutor() {
-//        return executorPool;
-//    }
+    public ExecutorService getExecutor() {
+        return executorPool;
+    }
 
     public void execute(Runnable task) {
         executorPool.execute(task);
