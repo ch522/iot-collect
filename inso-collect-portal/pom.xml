@@ -33,7 +33,7 @@
 
             <artifactId>drools-core</artifactId>
 
-            <version>7.5.0.Final</version>
+            <version>7.60.0.Final</version>
 
         </dependency>
 
